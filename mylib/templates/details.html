@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<link rel="stylesheet" href="http://libs.useso.com/js/bootstrap/3.2.0/css/bootstrap.min.css">
+	<!--link href="Cover%20Template%20for%20Bootstrap_files/cover.css" rel="stylesheet"-->
+	<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>
+		书籍详情
+	</title>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+	<div class="container-fluid">
+		<div class="navbar-header">
+	      	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        	<span class="sr-only">Toggle navigation</span>
+	        	<span class="icon-bar"></span>
+	        	<span class="icon-bar"></span>
+	        	<span class="icon-bar"></span>
+	      	</button>
+	      	<a class="nav-brand" href="#">
+	      		<img alt="HIT-group" src="/static/brand.gif" />
+	      	</a>
+	      	<p class="navbar-text"><strong>图书管理系统</strong></p>
+	    </div>
+
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	    	<ul class="nav navbar-nav" style="float:left">
+				<li role="presentation" class="active"><a href="/">查询页面</a></li>
+		    	<li role="presentation" class="active"><a href="/addbook">添加图书</a></li>
+		    	<li role="presentation" class="active"><a href="/addauthor">添加作者</a></li>
+		    </ul>
+	    </div>
+	</div>
+</nav>
+	<div class="jumbotron">
+		<div class="container">
+		<br />
+		{% if book %}
+		<div class="row">
+			<div class="col-md-6">
+				<table class="table table-condensed">
+					<tr>
+						<th>书籍名</th>
+						<td>{{ book.Title }}</td>
+					</tr>
+					<tr>
+						<th>作者</th>
+						<td>{{ book.AuthorID.Name }}</td>
+					</tr>
+					<tr>
+						<th>ISBN号</th>
+						<td>{{ book.ISBN }}</td>
+					</tr>
+					<tr>
+						<th>出版商</th>
+						<td>{{ book.Publisher }}</td>
+					</tr>
+					<tr>
+						<th>出版日期</th>
+						<td>{{ book.PublishDate }}</td>
+					</tr>
+					<tr>
+						<th>价格</th>
+						<td>{{ book.Price }}</td>
+					</tr>
+					<tr>
+						<th>操作</th>
+						
+						<td>
+						<form method="post">
+							<input type = "submit" name="delete" class="btn btn-primary" style="width:20%" value="Delete">
+							<input type = "submit" name="delete" class="btn btn-primary" style="width:20%" value="Modify">
+						</form>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="col-md-6">
+				<table class="table table-condensed">
+					<tr>
+						<th>作者名字</th>
+						<td>{{ book.AuthorID.Name }}</td>
+					</tr>
+					<tr>
+						<th>年龄</th>
+						<td>{{ book.AuthorID.Age}}</td>
+					</tr>
+					<tr>
+						<th>国籍</th>
+						<td>{{ book.AuthorID.Country }}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		{% endif %}
+		{%if info%}
+			<p>删除图书成功</p>
+		{% endif %}
+	</div>
+
+</body>
+</html>

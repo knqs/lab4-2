@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<link rel="stylesheet" href="http://libs.useso.com/js/bootstrap/3.2.0/css/bootstrap.min.css">
+	<!--link href="Cover%20Template%20for%20Bootstrap_files/cover.css" rel="stylesheet"-->
+	<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>
+		查询作者
+	</title>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+	<div class="container-fluid">
+		<div class="navbar-header">
+	      	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        	<span class="sr-only">Toggle navigation</span>
+	        	<span class="icon-bar"></span>
+	        	<span class="icon-bar"></span>
+	        	<span class="icon-bar"></span>
+	      	</button>
+	      	<a class="nav-brand" href="#">
+	      		<img alt="HIT-group" src="/static/brand.gif" />
+	      	</a>
+	      	<p class="navbar-text"><strong>图书管理系统</strong></p>
+	    </div>
+
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	    	<ul class="nav navbar-nav" style="float:left">
+				<li role="presentation" class="active"><a href="/">查询页面</a></li>
+		    	<li role="presentation" class="active"><a href="/addbook">添加图书</a></li>
+		    	<li role="presentation" class="active"><a href="/addauthor">添加作者</a></li>
+		    </ul>
+	    </div>
+	</div>
+</nav>
+<div class="jumbotron">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12"><br /></div>
+			</div>
+			<form method="post">
+				<div class="row">
+					<div class="col-md-4"></div>
+					<div class="col-md-3">
+						<input type="text" name="search" id="search" style="width:100%" placeholder="搜索作者">
+					</div>
+					<div class="col-md-1"><input class="btn btn-primary" type="submit" id="submit" value="查询" style="width:100%;height:80%"></div>
+					<div class="col-md-4"></div>
+				</div>
+			</form>
+		</div>
+		<br />
+		{% if messages %}
+		<table class="table table-hover">
+			<tr>
+				<th>书籍名</th>
+				<th></th>
+			</tr>
+			{% for message in messages %}
+			<tr>
+				<td></td>
+				<td><a href="/show/{{ message.ISBN }}">{{ message.Title }}</a></td>
+			</tr>
+			{% endfor %}
+		</table>
+		{% endif %}
+		{%if Tips%}
+			<p style="color:red">{{ Tips }}</p>
+		{% endif %}
+	</div>
+</body>
+</html>

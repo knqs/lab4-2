@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<link rel="stylesheet" href="http://libs.useso.com/js/bootstrap/3.2.0/css/bootstrap.min.css">
+	<!--link href="Cover%20Template%20for%20Bootstrap_files/cover.css" rel="stylesheet"-->
+	<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>
+		输入图书信息
+	</title>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+	<div class="container-fluid">
+		<div class="navbar-header">
+	      	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        	<span class="sr-only">Toggle navigation</span>
+	        	<span class="icon-bar"></span>
+	        	<span class="icon-bar"></span>
+	        	<span class="icon-bar"></span>
+	      	</button>
+	      	<a class="nav-brand" href="#">
+	      		<img alt="HIT-group" src="/static/brand.gif" />
+	      	</a>
+	      	<p class="navbar-text"><strong>图书管理系统</strong></p>
+	    </div>
+
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	    	<ul class="nav navbar-nav" style="float:left">
+				<li role="presentation" class="active"><a href="/">查询页面</a></li>
+		    	<li role="presentation" class="active"><a href="/addbook">添加图书</a></li>
+		    	<li role="presentation" class="active"><a href="/addauthor">添加作者</a></li>
+		    </ul>
+	    </div>
+	</div>
+</nav>
+<div class="jumbotron" style="background-image:url(backgroundimage.jpg)">
+<form method="post" action="/changebook">
+	<div class="container" style="text-align:center">
+			<br />
+			{%if messages%}
+			<div class="row">
+				<div class="col-md-1 col-md-offset-4"><label >Title</label></div>
+				<div class="col-md-4"><strong>{{messages.Title}}</strong></div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-md-1 col-md-offset-4"><label >ISBN</label></div>
+				<div class="col-md-4"><input type="text" name="isbn" id="isbn" value="{{ISBN}}" onfocus="this.blur()"></div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-md-1 col-md-offset-4"><label>Author</label></div>
+				<div class="col-md-4"><input type="text" name="author" id="author" value="{{messages.AuthorID.Name}}" onblur="Check(this,'authortips')"></div>
+				<div class="col-md-2"><label id="authortips" style="color:red"></label></div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-md-1 col-md-offset-4"><label>Publisher</label></div>
+				<div class="col-md-4"><input type="text" name="publisher" id="publisher" value="{{messages.Publisher}}" onblur="Check(this,'publishertips')"></div>
+				<div class="col-md-2"><label id="publishertips" style="color:red"></label></div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-md-1 col-md-offset-4"><label>PublishDate</label></div>
+				<div class="col-md-4">
+					<select name="YYYY" id="YYYY" onchange="YYYYDD(this.value)" onblur="Checkdate()">
+				    	<option  value="">请选择 年</option>
+				  	</select>
+				  	<select name="MM" id="MM" onchange="MMDD(this.value)" onblur="Checkdate()">
+				    	<option value="">选择 月</option>
+				  	</select>
+				  	<select name="DD" id="DD" onblur="Checkdate()">
+				    	<option value="">选择 日</option>
+				  	</select>
+				</div>
+				<div class="col-md-2"><label id="datetips" style="color:red"></label></div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-md-1 col-md-offset-4"><label>Price</label></div>
+				<div class="col-md-4"><input type="text" id="price" name="price" value="{{messages.Price}}" onblur="Checkprice(this)"></div>
+				<div class="col-md-2"><label id="pricetips" style="color:red"></label></div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-md-4 col-md-offset-5">
+				<a href="http://www.baidu.com/">
+					<input class="btn btn-primary" style="height:30px;width:100%" type="submit" id="submit" value="确认修改">
+				</a>
+			</div>
+		{%endif%}
+	</div>
+</form>
+</div>
+{% if Tips %}
+	<script>
+		alert('{{Tips}}');
+	</script>
+{% endif %}
+</body>
+</html>
+
+<script>
+	function Checkform() {
+		if (Checkisbn(document.getElementById("isbn")) &&
+		Checkprice(document.getElementById("price")) &&
+		Check(document.getElementById("publisher"),"publishertips") &&
+		Check(document.getElementById("title"),"titletips") &&
+		Check(document.getElementById("author"),"authortips") &&
+		Checkdate() ){
+			return true
+		}
+		else return false;
+	}
+	function Checkdate(){
+		if(document.getElementById("YYYY").value.length == 0 || document.getElementById("MM").value.length == 0 ||document.getElementById("DD").value.length == 0){
+			document.getElementById("datetips").innerHTML = "选择日期";
+			document.getElementById("submit").disabled = "disabled";
+			return false;
+		}
+		else{
+			document.getElementById("datetips").innerHTML = "";
+			document.getElementById("submit").disabled = "";
+		}
+	}
+	function Checkprice(id){
+		if(isNaN(id.value)){
+			document.getElementById("pricetips").innerHTML = "格式错误";
+			document.getElementById("submit").disabled = "disabled";
+			return false;
+		}
+		else if(id.value.length <= 0){
+			document.getElementById("pricetips").innerHTML = "不可省略";
+			document.getElementById("submit").disabled = "disabled";
+			return false;
+		}
+		else if(id.value.length > 100){
+			document.getElementById("pricetips").innerHTML = "过长(<100)";
+			document.getElementById("submit").disabled = "disabled";
+			return false;
+		}
+		else{
+			document.getElementById("pricetips").innerHTML = "";
+			document.getElementById("submit").disabled = "";
+		}
+	}
+	function Check(id,name){
+		if(id.value.length <= 0){
+			document.getElementById(name).innerHTML = "不可省略";
+			document.getElementById("submit").disabled = "disabled";
+			return false;
+		}
+		else if(id.value.length > 100){
+			document.getElementById(name).innerHTML = "过长(<100)";
+			document.getElementById("submit").disabled = "disabled";
+			return false;
+		}
+		else{
+			document.getElementById(name).innerHTML = "";
+			document.getElementById("submit").disabled = "";
+		}
+	}
+	function YYYYMMDDstart()   
+    {
+           MonHead = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];   
+           //先给年下拉框赋内容   
+           var y  = new Date().getFullYear();   
+           for (var i = (y-100); i < (y+100); i++) //以今年为准，前30年，后30年   
+                   document.getElementById("YYYY").options.add(new Option(" "+ i +" 年", i));   
+    
+           //赋月份的下拉框   
+           for (var i = 1; i < 13; i++)   
+                   document.getElementById("MM").options.add(new Option(" " + i + " 月", i));   
+    
+           document.getElementById("YYYY").value = {{messages.PublishDate.year}};   
+           document.getElementById("MM").value = {{messages.PublishDate.month}};   
+           var n = MonHead[new Date().getMonth()];   
+           if (new Date().getMonth() ==1 && IsPinYear(YYYYvalue)) n++;   
+                writeDay(n); //赋日期下拉框Author:meizz   
+           document.getElementById("DD").value = {{messages.PublishDate.day}};   
+   }   
+   if(document.attachEvent)   
+       window.attachEvent("onload", YYYYMMDDstart);   
+   else   
+       window.addEventListener('load', YYYYMMDDstart, false);   
+   function YYYYDD(str) //年发生变化时日期发生变化(主要是判断闰平年)   
+   {   
+           var MMvalue = document.getElementById("MM").options[document.getElementById("MM").selectedIndex].value;   
+           if (MMvalue == ""){ var e = document.getElementById("DD"); optionsClear(e); return;}   
+           var n = MonHead[MMvalue - 1]; 
+           if (MMvalue ==2 && IsPinYear(str)) n++;   
+                writeDay(n)   
+   }
+   function MMDD(str)   //月发生变化时日期联动   
+   {   
+        var YYYYvalue = document.getElementById("YYYY").options[document.getElementById("YYYY").selectedIndex].value;   
+        if (YYYYvalue == ""){ var e = document.getElementById("DD"); optionsClear(e); return;}   
+        var n = MonHead[str - 1];   
+        if (str ==2 && IsPinYear(YYYYvalue)) n++;   
+        writeDay(n)
+   }   
+   function writeDay(n)   //据条件写日期的下拉框   
+   {   
+           var e = document.getElementById("DD"); optionsClear(e);   
+           for (var i=1; i<(n+1); i++)   
+                e.options.add(new Option(" "+ i + " 日", i));   
+   }
+   function IsPinYear(year)//判断是否闰平年   
+   {     return(0 == year%4 && (year%100 !=0 || year%400 == 0));}   
+   function optionsClear(e)   
+   {   
+        e.options.length = 1;   
+   }   
+</script>
